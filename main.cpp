@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
 	std::thread t_window(gameLoop, std::ref(window));
 
 	std::srand(std::time(0));
-	
+
 	while(window.isOpen()){
 		/* EVENT POLLING */
 		sf::Event event;

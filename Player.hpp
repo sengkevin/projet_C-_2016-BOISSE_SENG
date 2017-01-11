@@ -8,7 +8,8 @@ public:
     Player();
 	void attack();
     void direction();
-    virtual void deplacement() const;
+
+    virtual void deplacement();
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

@@ -12,7 +12,7 @@ Electeur::Electeur(){
     m_speed = 0.2f;
 }
 
-void Electeur::deplacement() const{
+void Electeur::deplacement(){
 
 }
 

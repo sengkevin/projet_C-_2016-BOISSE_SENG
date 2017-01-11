@@ -8,7 +8,7 @@
 class Character : public sf::Drawable , public sf::Transformable {
 public:
 		std::string toString() const;
-        virtual void deplacement() const = 0;
+        virtual void deplacement() = 0;
 
 		double getSpeed(void){ return m_speed; }
 		void setSpeed(double speed){ m_speed = speed; }

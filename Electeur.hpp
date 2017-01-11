@@ -6,7 +6,7 @@
 class Electeur : public Character{
 public:
     Electeur();
-    virtual void deplacement() const;
+    virtual void deplacement();
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

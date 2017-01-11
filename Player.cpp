@@ -10,7 +10,22 @@ Player::Player(){
     m_speed = 0.2f;
 }
 
-void Player::deplacement() const{
+void Player::deplacement(){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+        move(-m_speed, 0);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+        move(m_speed, 0);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+        move(0, -m_speed);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+        move(0, m_speed);
+    }
+}
+
+void Player::direction(){
 
 }
 
