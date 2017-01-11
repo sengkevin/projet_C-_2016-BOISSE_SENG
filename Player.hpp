@@ -11,9 +11,16 @@
 class Player : public Character{
 public:
     Player();
-	void attack();
+	void attaque();
     void rotation(sf::RenderWindow& window);
+
     virtual void deplacement();
+
+	/**
+	*	Test de l'etat du personnage (marche, arret)
+	*/
+    void stateHandler(sf::Clock&);
+    
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

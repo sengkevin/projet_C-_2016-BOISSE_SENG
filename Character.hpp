@@ -16,6 +16,7 @@ public:
 		std::string toString() const;
         virtual void deplacement() = 0;
 
+
 		/**
 		*	Teste si ce personnage est en vie
 		*/
@@ -30,6 +31,10 @@ protected:
 		void goUp(){ move(0, -m_speed); }
 		void goDown(){ move(0, m_speed); }
 
+		enum C_States{
+			STANDING,
+			WALKING
+		};
 
 		std::string m_nom;
         int m_hp;
@@ -39,6 +44,7 @@ protected:
         sf::Texture m_texture;
         sf::Sprite m_sprite;
 		sf::FloatRect m_hitbox;
+		C_States m_cstate;
 };
 
 #endif
