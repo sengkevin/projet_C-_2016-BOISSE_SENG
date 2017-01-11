@@ -2,9 +2,9 @@ GCC = g++
 CFLAGS = -Wall -std=c++11
 LDFLAGS = -Wl,--no-as-needed
 INFILE = -lsfml-system -lsfml-graphics -lsfml-window -pthread -lX11
-EXEC = appExe
+EXEC = appExe.exe
 
-SRC = main.cpp App.cpp Player.cpp
+SRC = main.cpp App.cpp Player.cpp Electeur.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(EXEC)

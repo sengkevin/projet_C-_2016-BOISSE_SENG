@@ -3,6 +3,12 @@
 
 #include "Character.hpp"
 
+/**
+ *  Classe Electeur
+ *  Ennemis basique du jeu
+ *
+ *  @author kseng, mboisse
+ */
 class Electeur : public Character{
 public:
     Electeur();
