@@ -14,6 +14,11 @@ public:
 		void setSpeed(double speed){ m_speed = speed; }
 
 protected:
+		void goLeft(){ move(-m_speed, 0); }
+		void goRight(){ move(m_speed, 0); }
+		void goUp(){ move(0, -m_speed); }
+		void goDown(){ move(0, m_speed); }
+
 		std::string m_nom;
         int m_hp;
         double m_speed;

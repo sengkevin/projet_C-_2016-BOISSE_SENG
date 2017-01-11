@@ -3,6 +3,7 @@
 
 void renderPlayer(sf::RenderWindow& window, Player& player){
     player.deplacement();
+    player.direction(window);
 
     window.draw(player);
 }

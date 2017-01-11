@@ -7,7 +7,7 @@ class Player : public Character{
 public:
     Player();
 	void attack();
-    void direction();
+    void direction(sf::RenderWindow& window);
 
     virtual void deplacement();
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

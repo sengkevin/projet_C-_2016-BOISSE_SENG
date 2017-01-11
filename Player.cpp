@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Player.hpp"
 
 Player::Player(){
@@ -12,21 +14,29 @@ Player::Player(){
 
 void Player::deplacement(){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-        move(-m_speed, 0);
+        goLeft();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-        move(m_speed, 0);
+        goRight();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-        move(0, -m_speed);
+        goUp();
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-        move(0, m_speed);
+        goDown();
     }
 }
 
-void Player::direction(){
+void Player::direction(sf::RenderWindow& window){
+    float rot;
+    sf::Vector2f c_m, c_p;
 
+    c_m = (sf::Vector2f)sf::Mouse::getPosition(window);
+    c_p = getPosition();
+
+    rot = atan2((c_m.y - c_p.y),(c_m.x - c_p.x))*180/M_PI;
+
+    setRotation(rot);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const{
