@@ -30,13 +30,11 @@ void gameLoop(sf::RenderWindow& window){
 
     Player player;
     Electeur electeur1, electeur2;
-
+    
     while(window.isOpen()){
         window.clear(sf::Color::Black);
 
         renderPlayer(window, std::ref(player), std::ref(gameClock));
-        window.draw(electeur1);
-        window.draw(electeur2);
 
         window.display();
     }

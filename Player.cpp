@@ -72,18 +72,18 @@ void Player::attaque(){
 void Player::stateHandler(sf::Clock& gameClock){
     static int i = 0;
 
-    if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0){
-        switch(m_cstate){
-            case STANDING:
-                i = 0;
-                m_sprite.setTextureRect(sf::IntRect(0,0,64,64));
-                break;
+    switch(m_cstate){
+        case STANDING:
+            i = 0;
+            m_sprite.setTextureRect(sf::IntRect(0,0,64,64));
+            break;
 
-            case WALKING:
+        case WALKING:
+            if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0){
                 m_sprite.setTextureRect(sf::IntRect(i*64,0,64,64));
                 i = (i+1)%8;
-                break;
-        }
+            }
+            break;
     }
 }
 

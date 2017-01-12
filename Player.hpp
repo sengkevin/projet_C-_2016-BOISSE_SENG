@@ -2,6 +2,7 @@
 #define _PLAYER_H
 
 #include "Character.hpp"
+#include "Attaque.hpp"
 
 /**
  *  Classe joueur
@@ -14,14 +15,15 @@ public:
 	void attaque();
     void rotation(sf::RenderWindow& window);
 
+    /**
+    *	Test de l'etat du personnage (marche, arret)
+    */
+    void stateHandler(sf::Clock&);
+
     virtual void deplacement();
 
-	/**
-	*	Test de l'etat du personnage (marche, arret)
-	*/
-    void stateHandler(sf::Clock&);
-    
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
 };
 
 

@@ -4,5 +4,6 @@
 #include "App.hpp"
 #include "Character.hpp"
 #include "Player.hpp"
+#include "Attaque.hpp"
 
 #endif
