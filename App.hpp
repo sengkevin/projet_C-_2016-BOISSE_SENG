@@ -2,8 +2,9 @@
 #define _APP_H
 
 #include "Player.hpp"
-#include "Electeur.hpp"
+#include "Citoyen.hpp"
+#include "GameState.hpp"
 
-void gameLoop(sf::RenderWindow& window);
+void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList);
 
 #endif

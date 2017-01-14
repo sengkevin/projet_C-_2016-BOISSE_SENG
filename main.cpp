@@ -15,9 +15,16 @@ int main(int argc, char* argv[]){
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Title");
 	/* Desactivation contexte OpenGL */
 	window.setActive(false);
-	std::thread t_window(gameLoop, std::ref(window));
 
 	std::srand(std::time(0));
+
+	std::vector<Character*> charList;
+	charList.clear();
+	charList.push_back(new Player);
+	charList.push_back(new Citoyen);
+	charList.push_back(new Citoyen);
+
+	std::thread t_window(gameLoop, std::ref(window), std::ref(charList));
 
 	while(window.isOpen()){
 		/* EVENT POLLING */

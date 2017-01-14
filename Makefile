@@ -4,7 +4,7 @@ LDFLAGS = -Wl,--no-as-needed
 INFILE = -lsfml-system -lsfml-graphics -lsfml-window -pthread -lX11
 EXEC = appExe.exe
 
-SRC = main.cpp App.cpp Player.cpp Electeur.cpp Attaque.cpp
+SRC = main.cpp App.cpp Player.cpp Citoyen.cpp Attaque.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(EXEC)

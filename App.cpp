@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "App.hpp"
 
+
 /**
  *  Rendu graphique du joueur
  *
@@ -9,12 +10,21 @@
  *  @param player
  *          Personnage joueur
  */
-void renderPlayer(sf::RenderWindow& window, Player& player, sf::Clock& gameClock){
-    player.deplacement();
+void renderPlayer(sf::RenderWindow& window, Player& player, sf::Clock& gameClock, std::vector<Character*> charList){
+    player.getInputs();
     player.rotation(window);
-    player.stateHandler(gameClock);
+
+    if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0){
+        player.animationDraw();
+        player.stateHandler(window, gameClock, charList);
+    }
 
     window.draw(player);
+}
+
+void renderCitoyen(sf::RenderWindow& window, Citoyen& citoyen, sf::Clock& gameClock){
+    citoyen.deplacement();
+    window.draw(citoyen);
 }
 
 /**
@@ -23,18 +33,17 @@ void renderPlayer(sf::RenderWindow& window, Player& player, sf::Clock& gameClock
  *  @param window
  *          Fenetre de jeu
  */
-void gameLoop(sf::RenderWindow& window){
+void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
     sf::Clock gameClock;
-
     gameClock.restart();
 
-    Player player;
-    Electeur electeur1, electeur2;
-    
     while(window.isOpen()){
         window.clear(sf::Color::Black);
 
-        renderPlayer(window, std::ref(player), std::ref(gameClock));
+        renderPlayer(window, (Player&)(*charList[0]), std::ref(gameClock), charList);
+
+        for(unsigned int i=1; i<charList.size(); i++)
+            renderCitoyen(window, (Citoyen&)(*charList[i]), std::ref(gameClock));
 
         window.display();
     }
