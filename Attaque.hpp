@@ -5,15 +5,15 @@
 
 class Attaque : public sf::Sprite{
 public:
-    Attaque(int degats, sf::Time cooldown, int startup, int active, int end, int l, int h, float distance);
+    Attaque(int degats, int startup, int active, int end, int l, int h, float distance);
 
 //    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    int getDegats(){ return m_degats;}
     float getDistance(){ return m_distance; }
     int getStartupFrame(){ return m_startUpFrame; }
     int getActiveFrame(){ return m_activeFrame; }
     int getEndFrame(){ return m_endFrame; }
-    sf::Time getCooldown() { return m_cooldown; }
     sf::FloatRect getHitbox(){ return getGlobalBounds(); }
 
 protected:
@@ -21,11 +21,6 @@ protected:
     sf::Sprite m_sprite;
 
     int m_degats;
-
-    /**
-    *   Délai entre les attaques
-    */
-    sf::Time m_cooldown;
 
     /**
     *   Durée de l'attaque

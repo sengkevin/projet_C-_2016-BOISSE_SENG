@@ -23,9 +23,7 @@ public:
     *	Test de l'etat du personnage (marche, arret)
     */
     void stateHandler(sf::RenderWindow& window, sf::Clock& gameClock, std::vector<Character*> charList);
-    void animationDraw();
-
-//    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void animationDraw() = 0;
 
     enum C_States{
         STANDING,
@@ -34,9 +32,11 @@ public:
         KICK
     };
 
-private:
-    const double m_walkSpeed;
+    void setNState(C_States state){ m_nstate = state; }
+
+protected:
     std::map<std::string, Attaque*> m_attaques;
+    double m_walkSpeed;
 
     const float getAngleToMouse(sf::RenderWindow& window){
         sf::Vector2f c_m = (sf::Vector2f)sf::Mouse::getPosition(window);

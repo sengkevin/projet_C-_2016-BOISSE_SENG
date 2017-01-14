@@ -15,17 +15,24 @@ class Character : public sf::Sprite {
 public:
 		std::string toString() const;
         virtual void deplacement() = 0;
+		virtual void animationDraw() = 0;
 
 		/**
 		*	Teste si ce personnage est en vie
 		*/
-		void isAlive(){ setAlive((m_hp>0)? true : false); }
+		void testAlive(){ setAlive((m_hp>0)? true : false); }
 
 //		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 
 		double getSpeed(void){ return m_speed; }
 		void setSpeed(double speed){ m_speed = speed; }
 		void setAlive(bool state){ m_alive = state; }
+		bool isAlive(){ return m_alive; }
+
+		void damage(int degats){
+			m_hp -= degats;
+			testAlive();
+		}
 
 		sf::FloatRect getHitbox(){ return getGlobalBounds(); }
 
@@ -40,6 +47,7 @@ protected:
         double m_speed;
 
 		bool m_alive;
+		bool m_inAnimation;
 
         sf::Texture m_texture;
         sf::Sprite m_sprite;

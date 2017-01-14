@@ -2,6 +2,7 @@
 #define _APP_H
 
 #include "Player.hpp"
+#include "Trump.hpp"
 #include "Citoyen.hpp"
 #include "GameState.hpp"
 

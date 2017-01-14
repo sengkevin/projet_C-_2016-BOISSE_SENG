@@ -20,9 +20,6 @@ int main(int argc, char* argv[]){
 
 	std::vector<Character*> charList;
 	charList.clear();
-	charList.push_back(new Player);
-	charList.push_back(new Citoyen);
-	charList.push_back(new Citoyen);
 
 	std::thread t_window(gameLoop, std::ref(window), std::ref(charList));
 
@@ -34,7 +31,7 @@ int main(int argc, char* argv[]){
 				case sf::Event::Closed :
 					window.close();
 					break;
-
+				
 				default :
 					break;
 			}
