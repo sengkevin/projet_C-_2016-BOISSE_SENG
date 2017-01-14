@@ -5,5 +5,6 @@
 #include "Character.hpp"
 #include "Player.hpp"
 #include "Attaque.hpp"
+#include "windowParam.hpp"
 
 #endif

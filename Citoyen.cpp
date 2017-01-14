@@ -1,6 +1,7 @@
 #include <ctime>
 
 #include "Citoyen.hpp"
+#include "windowParam.hpp"
 
 /**
  *  Constructeur d'Citoyen
@@ -11,7 +12,11 @@
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
-    setPosition(std::rand()%800,std::rand()%600);
+
+    if(rand()%2 == 0)
+        setPosition(0, rand()%W_HEIGHT);
+    else
+        setPosition(W_WIDTH, rand()%W_HEIGHT);
 
     m_hp = hp;
     setAlive(true);
@@ -35,7 +40,7 @@ void Citoyen::deplacement(){
 
     if(m_distance <= 0)
     {
-        m_distance = 300 + rand() % 50; // distance aléatoire entre 3 et 10 frames
+        m_distance = 500 + rand() % 300; // distance aléatoire entre 3 et 10 frames
         m_dirX = rand()%3;
         m_dirY = rand()%3;
     }
@@ -67,11 +72,6 @@ void Citoyen::deplacement(){
     }
 
     setRotation(rotation[m_dirY][m_dirX]);
-
-    if(getPosition().x <0 || getPosition().x > 800 || getPosition().y<0 || getPosition().y>600){
-        setPosition(std::rand()%800,std::rand()%600);
-        m_distance = 0;
-    }
 }
 
 void Citoyen::animationDraw(){

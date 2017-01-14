@@ -6,13 +6,10 @@
 
 #include "GameInc.hpp"
 
-#define WIDTH 	800
-#define HEIGHT	600
-
 int main(int argc, char* argv[]){
 	XInitThreads();
 
-	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Title");
+	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "Title");
 	/* Desactivation contexte OpenGL */
 	window.setActive(false);
 
@@ -31,7 +28,7 @@ int main(int argc, char* argv[]){
 				case sf::Event::Closed :
 					window.close();
 					break;
-				
+
 				default :
 					break;
 			}

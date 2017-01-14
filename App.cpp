@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <thread>
 #include "App.hpp"
-
+#include "windowParam.hpp"
 
 /**
  *  Rendu graphique du joueur
@@ -41,9 +41,12 @@ void endGame(){
  */
 void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
     GameState gameCurrState;
+    sf::Texture t_fond, t_hud;
+    sf::Sprite s_fond, s_hud;
     sf::Clock gameClock;
 
     gameClock.restart();
+
 
     while(window.isOpen()){
         switch(gameCurrState.getCurrentState()){
@@ -58,8 +61,14 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
 
             case GameState::LOAD:
                 charList.push_back(new Trump);
-                for(int i=0; i<5; i++)
-                    charList.push_back(new Citoyen(5));
+                for(int i=0; i<N_ELECTEURS; i++){
+                    charList.push_back(new Citoyen(ELECTEURS_BASE_HP));
+                    charList[i+1]->setPosition(rand()%W_WIDTH, rand()%W_HEIGHT);
+                }
+
+                if(!t_fond.loadFromFile("fond.png"))
+                    return;
+                s_fond.setTexture(t_fond);
 
                 gameCurrState.setCurrentState(GameState::MENU);
                 break;
@@ -68,11 +77,20 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
             case GameState::GAME:
                 window.clear(sf::Color::Black);
 
+                window.draw(s_fond);
+
                 renderPlayer(window, (Player&)(*charList[0]), std::ref(gameClock), charList);
 
                 for(unsigned int i=1; i<charList.size(); i++){
-                    if(charList[i]->isAlive())
-                        renderCitoyen(window, (Citoyen&)(*charList[i]), std::ref(gameClock));
+                    if(charList[i]->isAlive()){
+                        if(!charList[i]->isInBound(window)){
+                            charList.erase(charList.begin()+i);
+                            charList.push_back(new Citoyen(5));
+                            i = 1;
+                        }
+                        else
+                            renderCitoyen(window, (Citoyen&)(*charList[i]), std::ref(gameClock));
+                    }
                     else{
                         charList.erase(charList.begin() + i);
                         i = 1;

@@ -1,5 +1,5 @@
-#ifndef _Citoyen_H
-#define _Citoyen_H
+#ifndef _CITOYEN_H
+#define _CITOYEN_H
 
 #include "Character.hpp"
 

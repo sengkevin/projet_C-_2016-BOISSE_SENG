@@ -28,11 +28,14 @@ public:
 		void setSpeed(double speed){ m_speed = speed; }
 		void setAlive(bool state){ m_alive = state; }
 		bool isAlive(){ return m_alive; }
-
+		bool isInBound(sf::RenderWindow& window){
+			return (getPosition().x >= 0 && getPosition().x <= window.getSize().x && getPosition().y >= 0 && getPosition().y < window.getSize().y);
+		}
 		void damage(int degats){
 			m_hp -= degats;
 			testAlive();
 		}
+		int getHp(){ return m_hp; }
 
 		sf::FloatRect getHitbox(){ return getGlobalBounds(); }
 
