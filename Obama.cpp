@@ -2,7 +2,7 @@
 #include "Obama.hpp"
 
 Obama::Obama() : Player(){
-    m_texture.loadFromFile("sprite_obama.png");
+    m_texture.loadFromFile("img/sprite_obama.png");
     setTexture(m_texture);
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);

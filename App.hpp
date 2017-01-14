@@ -7,8 +7,8 @@
 #include "Citoyen.hpp"
 #include "GameState.hpp"
 
-#define N_ELECTEURS         5
-#define ELECTEURS_BASE_HP   10
+#define N_CITOYENS         5
+#define CITOYENS_BASE_HP   10
 void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList);
 
 #endif

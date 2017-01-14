@@ -7,7 +7,7 @@
  *  Constructeur d'Citoyen
  */
  Citoyen::Citoyen(int hp){
-    m_texture.loadFromFile("sprite_electeur.png");
+    m_texture.loadFromFile("img/sprite_electeur.png");
     setTexture(m_texture);
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);

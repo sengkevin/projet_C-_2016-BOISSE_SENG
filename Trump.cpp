@@ -2,7 +2,7 @@
 #include "Trump.hpp"
 
 Trump::Trump() : Player(){
-    m_texture.loadFromFile("sprite_trump.png");
+    m_texture.loadFromFile("img/sprite_trump.png");
     setTexture(m_texture);
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);
