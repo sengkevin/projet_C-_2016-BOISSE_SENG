@@ -12,11 +12,3 @@ Attaque::Attaque(int degats, int startup, int activeFrame, int endFrame, int l, 
     setTextureRect(sf::IntRect(0,0,l,h));
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
 }
-
-/*
-void Attaque::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    states.transform *= getTransform();
-    states.texture = &m_texture;
-    target.draw(m_sprite, states);
-}
-*/

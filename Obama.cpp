@@ -8,7 +8,7 @@ Obama::Obama() : Player(){
     setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
     m_walkSpeed = 0.28f;
-    m_healRate = 7;
+    m_healRate = 8;
     m_hp = 80;
 
     m_attaques["Punch"] = new Attaque(10,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);

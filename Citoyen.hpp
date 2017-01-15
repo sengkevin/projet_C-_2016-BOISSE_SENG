@@ -5,7 +5,7 @@
 
 /**
  *  Classe Citoyen
- *  Ennemis basique du jeu
+ *  Ennemis du jeu
  *
  *  @author kseng, mboisse
  */
@@ -15,7 +15,12 @@ public:
     virtual void deplacement();
     virtual void animationDraw();
 
-//    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    /**
+     *  Opérateur == pour tester si deux citoyens ont le même nombre de points de vie
+     */
+    friend bool operator==(Citoyen& c1, Citoyen& c2){
+        return (c1.m_hp == c2.m_hp);
+    }
 
 private:
     int m_distance;

@@ -12,17 +12,52 @@
 #define CITOYENS_BASE_HP   100
 
 #define DRAIN_TIME         1
-#define DRAIN_RATE         5
+#define DRAIN_RATE         4
 
 #define HP_REGEN_RATE      7
 
-
+/**
+ *  Classe App
+ *  Application du jeu
+ *
+ *  @author kseng, mboisse
+ */
 class App {
 public:
     App(sf::RenderWindow& window, sf::Clock& gameClock, std::vector<Character*> charList) : m_window(window), m_gameClock(gameClock), m_charList(charList){};
+
+    /**
+     *  Rendu graphique du joueur
+     *
+     *  @param player
+     *          Personnage joueur
+     */
     void renderPlayer(Player& player);
+
+    /**
+     *  Rendu graphique du citoyen
+     *
+     *  @param citoyen
+     *          Citoyen à dessiner
+     */
     void renderCitoyen(Citoyen& citoyen);
-    void endGame(Player& player);
+
+    /**
+     *  Fin de jeu
+     *
+     *  @param player
+     *          Personnage joueur
+     *  @param playerChar
+     *          string : nom du personnage choisi
+     */
+    void endGame(Player& player, std::string playerChar);
+
+    /**
+     *  Boucle de jeu
+     *
+     *  @param application
+     *          App du jeu
+     */
     friend void gameLoop(App& application);
 
 private:

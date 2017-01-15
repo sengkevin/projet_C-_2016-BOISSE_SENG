@@ -6,6 +6,7 @@
 
 /**
  *  Classe Obama
+ *  Personnage Obama
  *
  *  @author kseng, mboisse
  */

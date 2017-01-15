@@ -7,14 +7,21 @@
 
 /**
  *  Classe personnages
- *  Joueur + ennemis
+ *  Toutes les entités personnages
  *
  *  @author kseng, mboisse
  */
 class Character : public sf::Sprite {
 public:
-		std::string toString() const;
+
+	    /**
+	     *  Gestion du déplacement du personnage
+	     */
         virtual void deplacement() = 0;
+
+		/**
+	     *  Gestion de l'animation du personnage
+	     */
 		virtual void animationDraw() = 0;
 
 		/**
@@ -30,19 +37,22 @@ public:
 			}
 		 }
 
-//		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
-
 		double getSpeed(void){ return m_speed; }
 		void setSpeed(double speed){ m_speed = speed; }
 		void setAlive(bool state){ m_alive = state; }
 		bool isAlive(){ return m_alive; }
+		/**
+		 *	Teste si le personnage est dans l'écran
+		 */
 		bool isInBound(sf::RenderWindow& window){
 			return (getPosition().x >= 0 && getPosition().x <= window.getSize().x && getPosition().y >= 0 && getPosition().y < window.getSize().y);
 		}
+
 		void damage(int degats){
 			m_hp -= degats;
 			testAlive();
 		}
+
 		void addHp(int pts){
 			if((m_hp+pts) <= 100)
 				m_hp += pts;

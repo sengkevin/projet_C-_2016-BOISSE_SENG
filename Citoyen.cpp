@@ -12,10 +12,22 @@
     setTextureRect(sf::IntRect(0,0,16,24));
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
 
-    if(rand()%2 == 0)
-        setPosition(0, rand()%W_HEIGHT);
-    else
-        setPosition(W_WIDTH, rand()%W_HEIGHT);
+    int posIni = rand()%4;
+
+    switch(posIni){
+        case 0:
+            setPosition(0, rand()%W_HEIGHT);
+            break;
+        case 1:
+            setPosition(W_WIDTH, rand()%W_HEIGHT);
+            break;
+        case 2:
+            setPosition(rand()%W_WIDTH, 0);
+            break;
+        case 3:
+            setPosition(rand()%W_WIDTH, 0);
+            break;
+    }
 
     m_hp = hp;
     setAlive(true);
@@ -31,6 +43,7 @@
  *  Deplacement des Citoyens
  */
 void Citoyen::deplacement(){
+    /* Définition de la rotation du personnage selon la direction de son déplacement */
     int rotation[3][3] = {
         { -135, -90, -45 },
         { 180,  0, 0 },
@@ -39,7 +52,8 @@ void Citoyen::deplacement(){
 
     if(m_distance <= 0)
     {
-        m_distance = 500 + rand() % 300; // distance aléatoire entre 3 et 10 frames
+        m_distance = 500 + rand() % 300; // déplacement aléatoire durant 500 à 799 frames
+        // Direction aléatoire
         m_dirX = rand()%3;
         m_dirY = rand()%3;
     }
@@ -48,6 +62,7 @@ void Citoyen::deplacement(){
         setRotation(0);
 
         m_distance --;
+
         switch(m_dirY){
             case 0:
                 goUp();
@@ -75,6 +90,7 @@ void Citoyen::deplacement(){
 
 void Citoyen::animationDraw(){
     static int i = 0;
+    // On déplace le sprite sur la texture pour obtenir la frame suivante de l'animation
     setTextureRect(sf::IntRect(i*16,0,16,24));
     i = (i+1) % 7;
 }

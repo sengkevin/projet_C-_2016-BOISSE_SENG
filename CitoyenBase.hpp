@@ -4,7 +4,7 @@
 #include "Citoyen.hpp"
 
 /**
- *  Classe Citoyen
+ *  Classe CitoyenBase
  *  Ennemis basique du jeu
  *
  *  @author kseng, mboisse

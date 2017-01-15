@@ -3,11 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+ *  Classe Attaque
+ *  Attaques des joueurs
+ *
+ *  @author kseng, mboisse
+ */
 class Attaque : public sf::Sprite{
 public:
     Attaque(int degats, int startup, int active, int end, int l, int h, float distance);
-
-//    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     int getDegats(){ return m_degats;}
     float getDistance(){ return m_distance; }
@@ -22,11 +26,20 @@ protected:
 
     int m_degats;
 
+    // Frames de l'attaque
     /**
-    *   Durée de l'attaque
+    *   Nombre de frames de début de l'attaque
     */
     int m_startUpFrame;
+
+    /**
+    *   Nombre de frames actives de l'attaque (faisant des dégats)
+    */
     int m_activeFrame;
+
+    /**
+    *   Nombre de frames de fin de l'attaque
+    */
     int m_endFrame;
 
     float m_distance;

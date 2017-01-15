@@ -3,16 +3,18 @@
 #include "App.hpp"
 #include "windowParam.hpp"
 
+/**
+ *  Génération aléatoire du type de citoyen
+ */
 #define GENERATE_CITOYEN    if(rand()%2 == 0)   application.m_charList.push_back(new CitoyenBase);\
                             else                application.m_charList.push_back(new CitoyenGros);
+
 
 sf::Font font;
 
 /**
  *  Rendu graphique du joueur
  *
- *  @param window
- *          Fenetre de jeu
  *  @param player
  *          Personnage joueur
  */
@@ -20,7 +22,7 @@ void App::renderPlayer(Player& player){
     player.getInputs();
     player.rotation(m_window);
 
-    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
+    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0) // Limitation de la vitesse des frames dessinées
     {
         player.stateHandler(m_window, m_gameClock, m_charList);
         player.animationDraw();
@@ -29,10 +31,16 @@ void App::renderPlayer(Player& player){
     m_window.draw(player);
 }
 
+/**
+ *  Rendu graphique du citoyen
+ *
+ *  @param citoyen
+ *          Citoyen à dessiner
+ */
 void App::renderCitoyen(Citoyen& citoyen){
     citoyen.deplacement();
 
-    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
+    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0) // Limitation de la vitesse des frames dessinées
     {
         citoyen.animationDraw();
     }
@@ -40,7 +48,16 @@ void App::renderCitoyen(Citoyen& citoyen){
     m_window.draw(citoyen);
 }
 
-void App::endGame(Player& player){
+
+/**
+ *  Fin de jeu
+ *
+ *  @param player
+ *          Personnage joueur
+ *  @param playerChar
+ *          string : nom du personnage choisi
+ */
+void App::endGame(Player& player, std::string playerChar){
     sf::Text resultPrint;
     sf::Text textExit;
     sf::Texture t_badEndImage;
@@ -59,9 +76,17 @@ void App::endGame(Player& player){
     textExit.setOutlineThickness(1);
     textExit.setPosition(250, 500);
 
+    /* Test de fin */
     if(player.getHp() < 50){
-        if(!t_badEndImage.loadFromFile("img/notgoodending.png"))
-            return;
+        if(playerChar == "Trump"){
+            if(!t_badEndImage.loadFromFile("img/notgoodending_trump.png"))
+                return;
+        }
+        else if(playerChar == "Obama"){
+            if(!t_badEndImage.loadFromFile("img/notgoodending_obama.png"))
+                return;
+        }
+
         resultPrint.setCharacterSize(30);
         std::string str = "Vous avez perdu\nResultat des elections : ";
         str += std::to_string(player.getHp());
@@ -89,16 +114,18 @@ void App::endGame(Player& player){
     m_window.draw(r_badEndImage);
     m_window.display();
 }
+
 /**
  *  Boucle de jeu
  *
- *  @param
- *          Fenetre de jeu
+ *  @param application
+ *          App du jeu
  */
 void gameLoop(App& application){
     GameState gameCurrState;
     sf::Clock drainLife;
 
+    /* Temps d'une partie */
     sf::Time gameTime = sf::seconds(60.0f);
 
     sf::Text text1, text2;
@@ -123,8 +150,12 @@ void gameLoop(App& application){
     sf::RectangleShape rectTrump(sf::Vector2f(iconTrump.getSize()));
     sf::RectangleShape rectObama(sf::Vector2f(iconObama.getSize()));
 
+    /*
+        Machine à état du jeu
+    */
     while(application.m_window.isOpen()){
         switch(gameCurrState.getCurrentState()){
+            /* Initialisation du jeu / menu */
             case GameState::INIT:
                 s_menuFond.setTexture(&t_menuFond);
                 s_menuFond.setOrigin(0,0);
@@ -160,6 +191,7 @@ void gameLoop(App& application){
                 gameCurrState.setCurrentState(GameState::MENU);
                 break;
 
+            /* Menu d'accueil du jeu */
             case GameState::MENU:
                 rectTrump.setOutlineColor(sf::Color::Blue);
                 rectTrump.setFillColor(sf::Color(50,50,50,255));
@@ -193,6 +225,7 @@ void gameLoop(App& application){
                 application.m_window.display();
                 break;
 
+            /* Chargement de la partie */
             case GameState::LOAD:
                 if(perso == "Trump")
                     application.m_charList.push_back(new Trump);
@@ -229,18 +262,22 @@ void gameLoop(App& application){
                 gameCurrState.setCurrentState(GameState::GAME);
                 break;
 
+            /* Pause du jeu */
             case GameState::PAUSE:
                 break;
 
+            /* Boucle d'une partie */
             case GameState::GAME:
                 application.m_window.clear(sf::Color::Black);
                 application.m_window.draw(s_fond);
 
+                // Affichage du pourcentage d'électeurs restants
                 textLife = "Electeurs : ";
                 textLife += std::to_string(application.m_charList[0]->getHp());
                 textLife += "%";
                 text1.setString(textLife);
 
+                // Affichage du temps restant
                 timeRem = "Temps restant : ";
                 timeRem += std::to_string((int)(gameTime.asSeconds()-application.m_gameClock.getElapsedTime().asSeconds()));
                 text2.setString(timeRem);
@@ -248,31 +285,42 @@ void gameLoop(App& application){
                 application.renderPlayer((Player&)(*application.m_charList[0]));
 
                 for(unsigned int i=1; i<application.m_charList.size(); i++){
+                    /* Test si un ennemi sort de l'écran */
                     if(!application.m_charList[i]->isInBound(application.m_window)){
+                        /* Le citoyen est supprimé, et un nouveau est généré */
                         application.m_charList.erase(application.m_charList.begin()+i);
                         GENERATE_CITOYEN;
                         i = 1;
                     }
+                    /* Test si un ennemi est décédé */
                     else if(!application.m_charList[i]->isAlive())
                     {
+                        /* Le citoyen est supprimé, et un nouveau est généré */
                         application.m_charList.erase(application.m_charList.begin()+i);
                         GENERATE_CITOYEN;
+
+                        // Le pourcentage d'électeurs du joueur est augmenté
                         application.m_charList[0]->addHp(((Player*)application.m_charList[0])->getHealRate());
                         i = 1;
                     }
+                    /* Si l'ennemi est en vie et dans l'écran, on le dessine */
                     else
                         application.renderCitoyen((Citoyen&)(*application.m_charList[i]));
                 }
+
+                /* Baisse du nombre d'électeurs toutes les DRAIN_TIME */
                 if(drainLife.getElapsedTime().asSeconds() > DRAIN_TIME)
                 {
                     application.m_charList[0]->damage(DRAIN_RATE);
                     drainLife.restart();
                 }
 
+                /* Fin de jeu sur : Electeurs à 0% ou fin du temps de la partie */
                 if(!application.m_charList[0]->isAlive() || application.m_gameClock.getElapsedTime().asSeconds() >= gameTime.asSeconds()){
                     gameCurrState.setCurrentState(GameState::OVER);
                 }
 
+                /* Couleur de l'affichage du nombre d'électeurs */
                 if(application.m_charList[0]->getHp() < 10)
                     text1.setFillColor(sf::Color(200,0,0,255));
                 else if(application.m_charList[0]->getHp() < 25)
@@ -289,12 +337,14 @@ void gameLoop(App& application){
                 application.m_window.display();
                 break;
 
+            /* Fin de partie */
             case GameState::OVER:
-                application.endGame((Player&)*application.m_charList[0]);
+                application.endGame((Player&)*application.m_charList[0], perso);
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                     gameCurrState.setCurrentState(GameState::EXIT);
                 break;
 
+            /* Fermeture du jeu */
             case GameState::EXIT:
 //                application.m_window.close();
                 break;

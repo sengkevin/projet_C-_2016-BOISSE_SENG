@@ -1,6 +1,12 @@
 #ifndef _GAMESTATE_H
 #define _GAMESTATE_H
 
+/**
+ *  Classe GameState
+ *  Machine à états du jeu
+ *
+ *  @author kseng, mboisse
+ */
 class GameState{
 public:
     enum G_States{

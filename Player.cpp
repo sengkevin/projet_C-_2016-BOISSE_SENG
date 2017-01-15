@@ -47,14 +47,13 @@ void Player::getInputs(){
     else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)){
         m_nstate = KICK;
     }
-
 }
 
 /**
- *  Rotation du joueur vers la souris
+ *  Rotation du personnage vers le pointeur de la souris
  *
  *  @param window
- *          Fenetre de jeu
+ *          Fenêtre de jeu
  */
 void Player::rotation(sf::RenderWindow& window){
     setRotation(getAngleToMouse(window)*180/M_PI);

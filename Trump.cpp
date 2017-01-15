@@ -11,7 +11,7 @@ Trump::Trump() : Player(){
     m_healRate = 10;
     m_hp = 90;
 
-    m_attaques["Punch"] = new Attaque(20,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
+    m_attaques["Punch"] = new Attaque(15,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
     m_attaques["Kick"] = new Attaque(45,2,2,2,15*getScale().x,15*getScale().y,20*getScale().x);
 }
 
