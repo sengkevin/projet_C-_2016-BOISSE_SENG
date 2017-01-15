@@ -35,6 +35,13 @@ public:
 			m_hp -= degats;
 			testAlive();
 		}
+		void addHp(int pts){
+			if((m_hp+pts) <= 100)
+				m_hp += pts;
+			else
+			 	m_hp = 100;
+		}
+
 		int getHp(){ return m_hp; }
 
 		sf::FloatRect getHitbox(){ return getGlobalBounds(); }

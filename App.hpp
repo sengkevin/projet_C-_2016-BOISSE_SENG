@@ -9,6 +9,12 @@
 
 #define N_CITOYENS         5
 #define CITOYENS_BASE_HP   10
+
+#define DRAIN_TIME         1
+#define DRAIN_RATE         7
+
+#define HP_REGEN_RATE      3
+
 void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList);
 
 #endif

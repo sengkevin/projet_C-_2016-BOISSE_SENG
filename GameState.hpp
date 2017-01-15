@@ -8,6 +8,8 @@ public:
         LOAD,
         MENU,
         GAME,
+        OVER,
+        PAUSE,
         EXIT
     };
 

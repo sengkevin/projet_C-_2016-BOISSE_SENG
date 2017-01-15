@@ -9,7 +9,7 @@
 int main(int argc, char* argv[]){
 	XInitThreads();
 
-	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "Title");
+	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "Fight for the country");
 	/* Desactivation contexte OpenGL */
 	window.setActive(false);
 

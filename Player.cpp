@@ -7,6 +7,7 @@
  */
 Player::Player(){
     /* Chargement texture et sprite du personnage */
+    setPosition(400,300);
     m_cstate = STANDING;
     m_speed = m_walkSpeed;
     m_canAttack = true;
