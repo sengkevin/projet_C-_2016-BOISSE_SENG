@@ -7,6 +7,8 @@ Obama::Obama() : Player(){
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
+
+    m_nom = "Obama";
     m_walkSpeed = 0.28f;
     m_healRate = 8;
     m_hp = 80;

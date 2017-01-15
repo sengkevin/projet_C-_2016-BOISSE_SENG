@@ -54,10 +54,8 @@ void App::renderCitoyen(Citoyen& citoyen){
  *
  *  @param player
  *          Personnage joueur
- *  @param playerChar
- *          string : nom du personnage choisi
  */
-void App::endGame(Player& player, std::string playerChar){
+void App::endGame(Player& player){
     sf::Text resultPrint;
     sf::Text textExit;
     sf::Texture t_badEndImage;
@@ -78,11 +76,11 @@ void App::endGame(Player& player, std::string playerChar){
 
     /* Test de fin */
     if(player.getHp() < 50){
-        if(playerChar == "Trump"){
+        if(player.getNom() == "Trump"){
             if(!t_badEndImage.loadFromFile("img/notgoodending_trump.png"))
                 return;
         }
-        else if(playerChar == "Obama"){
+        else if(player.getNom() == "Obama"){
             if(!t_badEndImage.loadFromFile("img/notgoodending_obama.png"))
                 return;
         }
@@ -339,7 +337,7 @@ void gameLoop(App& application){
 
             /* Fin de partie */
             case GameState::OVER:
-                application.endGame((Player&)*application.m_charList[0], perso);
+                application.endGame((Player&)*application.m_charList[0]);
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                     gameCurrState.setCurrentState(GameState::EXIT);
                 break;

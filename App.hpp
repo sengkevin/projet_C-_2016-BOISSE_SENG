@@ -47,10 +47,8 @@ public:
      *
      *  @param player
      *          Personnage joueur
-     *  @param playerChar
-     *          string : nom du personnage choisi
      */
-    void endGame(Player& player, std::string playerChar);
+    void endGame(Player& player);
 
     /**
      *  Boucle de jeu

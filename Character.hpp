@@ -35,8 +35,9 @@ public:
 				m_hp = 0;
 				m_alive = false;
 			}
-		 }
+		}
 
+		std::string getNom(void){ return m_nom; }
 		double getSpeed(void){ return m_speed; }
 		void setSpeed(double speed){ m_speed = speed; }
 		void setAlive(bool state){ m_alive = state; }
@@ -75,7 +76,7 @@ protected:
         double m_speed;
 
 		bool m_alive;
-		bool m_inAnimation;
+		bool m_inAnimation; // Le personnage est en cours d'animation
 
         sf::Texture m_texture;
         sf::Sprite m_sprite;
