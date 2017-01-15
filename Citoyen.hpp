@@ -11,7 +11,7 @@
  */
 class Citoyen : public Character{
 public:
-    Citoyen(int hp);
+    Citoyen(int hp, float speed);
     virtual void deplacement();
     virtual void animationDraw();
 

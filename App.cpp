@@ -3,6 +3,9 @@
 #include "App.hpp"
 #include "windowParam.hpp"
 
+#define GENERATE_CITOYEN    if(rand()%2 == 0)   application.m_charList.push_back(new CitoyenBase);\
+                            else                application.m_charList.push_back(new CitoyenGros);
+
 sf::Font font;
 
 /**
@@ -13,31 +16,31 @@ sf::Font font;
  *  @param player
  *          Personnage joueur
  */
-void renderPlayer(sf::RenderWindow& window, Player& player, sf::Clock& gameClock, std::vector<Character*> charList){
+void App::renderPlayer(Player& player){
     player.getInputs();
-    player.rotation(window);
+    player.rotation(m_window);
 
-    if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
+    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
     {
-        player.stateHandler(window, gameClock, charList);
+        player.stateHandler(m_window, m_gameClock, m_charList);
         player.animationDraw();
     }
 
-    window.draw(player);
+    m_window.draw(player);
 }
 
-void renderCitoyen(sf::RenderWindow& window, Citoyen& citoyen, sf::Clock& gameClock){
+void App::renderCitoyen(Citoyen& citoyen){
     citoyen.deplacement();
 
-    if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
+    if(m_gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
     {
         citoyen.animationDraw();
     }
 
-    window.draw(citoyen);
+    m_window.draw(citoyen);
 }
 
-void endGame(sf::RenderWindow& window, Player& player){
+void App::endGame(Player& player){
     sf::Text resultPrint;
     sf::Text textExit;
     sf::Texture t_badEndImage;
@@ -80,21 +83,20 @@ void endGame(sf::RenderWindow& window, Player& player){
     r_badEndImage.setOrigin(0,0);
     r_badEndImage.setPosition(200,200);
 
-    window.clear(sf::Color::Black);
-    window.draw(resultPrint);
-    window.draw(textExit);
-    window.draw(r_badEndImage);
-    window.display();
+    m_window.clear(sf::Color::Black);
+    m_window.draw(resultPrint);
+    m_window.draw(textExit);
+    m_window.draw(r_badEndImage);
+    m_window.display();
 }
 /**
  *  Boucle de jeu
  *
- *  @param window
+ *  @param
  *          Fenetre de jeu
  */
-void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
+void gameLoop(App& application){
     GameState gameCurrState;
-    sf::Clock gameClock;
     sf::Clock drainLife;
 
     sf::Time gameTime = sf::seconds(60.0f);
@@ -121,7 +123,7 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
     sf::RectangleShape rectTrump(sf::Vector2f(iconTrump.getSize()));
     sf::RectangleShape rectObama(sf::Vector2f(iconObama.getSize()));
 
-    while(window.isOpen()){
+    while(application.m_window.isOpen()){
         switch(gameCurrState.getCurrentState()){
             case GameState::INIT:
                 s_menuFond.setTexture(&t_menuFond);
@@ -164,7 +166,7 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                 rectObama.setOutlineColor(sf::Color::Blue);
                 rectObama.setFillColor(sf::Color(50,50,50,255));
 
-                if(rectTrump.getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(window))){
+                if(rectTrump.getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(application.m_window))){
                     rectTrump.setFillColor(sf::Color(255,255,255,255));
                     rectTrump.setOutlineColor(sf::Color::Red);
                     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -172,7 +174,7 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                         gameCurrState.setCurrentState(GameState::LOAD);
                     }
                 }
-                if(rectObama.getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(window))){
+                if(rectObama.getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition(application.m_window))){
                     rectObama.setOutlineColor(sf::Color::Red);
                     rectObama.setFillColor(sf::Color(255,255,255,255));
 
@@ -182,29 +184,30 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                     }
                 }
 
-                window.clear(sf::Color::Red);
-                window.draw(s_menuFond);
-                window.draw(rectTrump);
-                window.draw(rectObama);
-                window.draw(text1);
-                window.draw(text2);
-                window.display();
+                application.m_window.clear(sf::Color::Red);
+                application.m_window.draw(s_menuFond);
+                application.m_window.draw(rectTrump);
+                application.m_window.draw(rectObama);
+                application.m_window.draw(text1);
+                application.m_window.draw(text2);
+                application.m_window.display();
                 break;
 
             case GameState::LOAD:
                 if(perso == "Trump")
-                    charList.push_back(new Trump);
+                    application.m_charList.push_back(new Trump);
                 else if(perso == "Obama")
-                    charList.push_back(new Obama);
+                    application.m_charList.push_back(new Obama);
 
                 for(int i=1; i<=N_CITOYENS; i++){
-                    charList.push_back(new Citoyen(CITOYENS_BASE_HP));
-                    charList[i]->setPosition(rand()%W_WIDTH, rand()%W_HEIGHT);
+                    GENERATE_CITOYEN;
+                    application.m_charList[i]->setPosition(rand()%W_WIDTH, rand()%W_HEIGHT);
                 }
 
                 if(!t_fond.loadFromFile("img/fond.png"))
                     return;
                 s_fond.setTexture(&t_fond);
+                s_fond.setPosition(0,0);
 
                 text1.setCharacterSize(20);
                 text1.setFillColor(sf::Color::White);
@@ -220,7 +223,7 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                 text2.setOrigin(0,0);
                 text2.setPosition(300, 10);
 
-                gameClock.restart();
+                application.m_gameClock.restart();
                 drainLife.restart();
 
                 gameCurrState.setCurrentState(GameState::GAME);
@@ -230,70 +233,70 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                 break;
 
             case GameState::GAME:
-                window.draw(s_fond);
+                application.m_window.clear(sf::Color::Black);
+                application.m_window.draw(s_fond);
 
                 textLife = "Electeurs : ";
-                textLife += std::to_string(charList[0]->getHp());
+                textLife += std::to_string(application.m_charList[0]->getHp());
                 textLife += "%";
                 text1.setString(textLife);
 
                 timeRem = "Temps restant : ";
-                timeRem += std::to_string((int)(gameTime.asSeconds()-gameClock.getElapsedTime().asSeconds()));
+                timeRem += std::to_string((int)(gameTime.asSeconds()-application.m_gameClock.getElapsedTime().asSeconds()));
                 text2.setString(timeRem);
 
-                renderPlayer(window, (Player&)(*charList[0]), std::ref(gameClock), charList);
+                application.renderPlayer((Player&)(*application.m_charList[0]));
 
-                for(unsigned int i=1; i<charList.size(); i++){
-                    if(!charList[i]->isInBound(window)){
-                        charList.erase(charList.begin()+i);
-                        charList.push_back(new Citoyen(CITOYENS_BASE_HP));
+                for(unsigned int i=1; i<application.m_charList.size(); i++){
+                    if(!application.m_charList[i]->isInBound(application.m_window)){
+                        application.m_charList.erase(application.m_charList.begin()+i);
+                        GENERATE_CITOYEN;
                         i = 1;
                     }
-                    else if(!charList[i]->isAlive())
+                    else if(!application.m_charList[i]->isAlive())
                     {
-                        charList.erase(charList.begin()+i);
-                        charList.push_back(new Citoyen(CITOYENS_BASE_HP));
-                        charList[0]->addHp(((Player*)charList[0])->getHealRate());
+                        application.m_charList.erase(application.m_charList.begin()+i);
+                        GENERATE_CITOYEN;
+                        application.m_charList[0]->addHp(((Player*)application.m_charList[0])->getHealRate());
                         i = 1;
                     }
                     else
-                        renderCitoyen(window, (Citoyen&)(*charList[i]), std::ref(gameClock));
+                        application.renderCitoyen((Citoyen&)(*application.m_charList[i]));
                 }
                 if(drainLife.getElapsedTime().asSeconds() > DRAIN_TIME)
                 {
-                    charList[0]->damage(DRAIN_RATE);
+                    application.m_charList[0]->damage(DRAIN_RATE);
                     drainLife.restart();
                 }
 
-                if(!charList[0]->isAlive() || gameClock.getElapsedTime().asSeconds() >= gameTime.asSeconds()){
+                if(!application.m_charList[0]->isAlive() || application.m_gameClock.getElapsedTime().asSeconds() >= gameTime.asSeconds()){
                     gameCurrState.setCurrentState(GameState::OVER);
                 }
 
-                if(charList[0]->getHp() < 10)
+                if(application.m_charList[0]->getHp() < 10)
                     text1.setFillColor(sf::Color(200,0,0,255));
-                else if(charList[0]->getHp() < 25)
+                else if(application.m_charList[0]->getHp() < 25)
                     text1.setFillColor(sf::Color(255,100,0,255));
-                else if(charList[0]->getHp() < 50)
+                else if(application.m_charList[0]->getHp() < 50)
                     text1.setFillColor(sf::Color(100,255,0,255));
-                else if(charList[0]->getHp() < 75)
+                else if(application.m_charList[0]->getHp() < 75)
                     text1.setFillColor(sf::Color(50,255,0,255));
                 else
                     text1.setFillColor(sf::Color(0,255,0,255));
 
-
-                window.draw(text1);
-                window.draw(text2);
-                window.display();
+                application.m_window.draw(text1);
+                application.m_window.draw(text2);
+                application.m_window.display();
                 break;
 
             case GameState::OVER:
-                endGame(window, (Player&)*charList[0]);
+                application.endGame((Player&)*application.m_charList[0]);
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                     gameCurrState.setCurrentState(GameState::EXIT);
                 break;
 
             case GameState::EXIT:
-//                window.close();
+//                application.m_window.close();
                 break;
 
         }

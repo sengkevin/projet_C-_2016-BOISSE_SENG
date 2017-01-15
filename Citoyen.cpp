@@ -6,11 +6,10 @@
 /**
  *  Constructeur d'Citoyen
  */
- Citoyen::Citoyen(int hp){
+ Citoyen::Citoyen(int hp, float speed){
     m_texture.loadFromFile("img/sprite_electeur.png");
     setTexture(m_texture);
     setTextureRect(sf::IntRect(0,0,16,24));
-    setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
 
     if(rand()%2 == 0)
@@ -21,11 +20,11 @@
     m_hp = hp;
     setAlive(true);
 
+    m_speed = speed;
+
     m_distance = 0;
     m_dirX = 0;
     m_dirY = 0;
-
-    m_speed = 0.15f;
 }
 
 /**

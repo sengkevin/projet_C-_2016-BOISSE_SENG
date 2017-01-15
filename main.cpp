@@ -18,7 +18,11 @@ int main(int argc, char* argv[]){
 	std::vector<Character*> charList;
 	charList.clear();
 
-	std::thread t_window(gameLoop, std::ref(window), std::ref(charList));
+	sf::Clock gameClock;
+
+	App application(std::ref(window), std::ref(gameClock), std::ref(charList));
+
+	std::thread t_window(gameLoop, std::ref(application));
 
 	while(window.isOpen()){
 		/* EVENT POLLING */
