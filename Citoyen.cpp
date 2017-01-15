@@ -75,5 +75,7 @@ void Citoyen::deplacement(){
 }
 
 void Citoyen::animationDraw(){
-
+    static int i = 0;
+    setTextureRect(sf::IntRect(i*16,0,16,24));
+    i = (i+1) % 7;
 }

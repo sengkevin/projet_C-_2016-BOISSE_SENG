@@ -28,15 +28,22 @@ void renderPlayer(sf::RenderWindow& window, Player& player, sf::Clock& gameClock
 
 void renderCitoyen(sf::RenderWindow& window, Citoyen& citoyen, sf::Clock& gameClock){
     citoyen.deplacement();
+
+    if(gameClock.getElapsedTime().asMilliseconds() % 66 == 0)
+    {
+        citoyen.animationDraw();
+    }
+
     window.draw(citoyen);
 }
 
 void endGame(sf::RenderWindow& window, Player& player){
     sf::Text resultPrint;
     sf::Text textExit;
+    sf::Texture t_badEndImage;
+    sf::RectangleShape r_badEndImage(sf::Vector2f(396,211));
 
     resultPrint.setFont(font);
-    resultPrint.setCharacterSize(30);
     resultPrint.setFillColor(sf::Color::Red);
     resultPrint.setOutlineColor(sf::Color::Black);
     resultPrint.setOutlineThickness(2);
@@ -50,19 +57,33 @@ void endGame(sf::RenderWindow& window, Player& player){
     textExit.setPosition(250, 500);
 
     if(player.getHp() < 50){
-        resultPrint.setString("Vous avez perdu");
+        if(!t_badEndImage.loadFromFile("img/notgoodending.png"))
+            return;
+        resultPrint.setCharacterSize(30);
+        std::string str = "Vous avez perdu\nResultat des elections : ";
+        str += std::to_string(player.getHp());
+        str += "%";
+        resultPrint.setString(str);
         resultPrint.setOrigin(resultPrint.getGlobalBounds().width/2, resultPrint.getGlobalBounds().height/2);
         resultPrint.setPosition(400, 100);
     }
     else{
-        resultPrint.setString("Le FBI a retrouvé vos traces en examinant les cadavres de vos victimes\n Vous avez perdu");
+        if(!t_badEndImage.loadFromFile("img/worstending.png"))
+            return;
+        resultPrint.setCharacterSize(20);
+        resultPrint.setString("Le FBI a retrouve vos traces en examinant les cadavres de vos victimes\n Vous avez perdu");
         resultPrint.setOrigin(resultPrint.getGlobalBounds().width/2, resultPrint.getGlobalBounds().height/2);
         resultPrint.setPosition(400, 100);
     }
 
+    r_badEndImage.setTexture(&t_badEndImage);
+    r_badEndImage.setOrigin(0,0);
+    r_badEndImage.setPosition(200,200);
+
     window.clear(sf::Color::Black);
     window.draw(resultPrint);
     window.draw(textExit);
+    window.draw(r_badEndImage);
     window.display();
 }
 /**
@@ -76,8 +97,10 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
     sf::Clock gameClock;
     sf::Clock drainLife;
 
+    sf::Time gameTime = sf::seconds(60.0f);
+
     sf::Text text1, text2;
-    std::string perso, textLife;
+    std::string perso, textLife, timeRem;
 
     sf::Texture t_menuFond, t_fond, iconTrump, iconObama;
 
@@ -185,10 +208,17 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
 
                 text1.setCharacterSize(20);
                 text1.setFillColor(sf::Color::White);
-                text1.setOutlineColor(sf::Color::Blue);
+                text1.setOutlineColor(sf::Color::Black);
                 text1.setOutlineThickness(2);
                 text1.setOrigin(0,0);
                 text1.setPosition(20, 10);
+
+                text2.setCharacterSize(20);
+                text2.setFillColor(sf::Color::White);
+                text2.setOutlineColor(sf::Color::Black);
+                text2.setOutlineThickness(2);
+                text2.setOrigin(0,0);
+                text2.setPosition(300, 10);
 
                 gameClock.restart();
                 drainLife.restart();
@@ -205,8 +235,11 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                 textLife = "Electeurs : ";
                 textLife += std::to_string(charList[0]->getHp());
                 textLife += "%";
-
                 text1.setString(textLife);
+
+                timeRem = "Temps restant : ";
+                timeRem += std::to_string((int)(gameTime.asSeconds()-gameClock.getElapsedTime().asSeconds()));
+                text2.setString(timeRem);
 
                 renderPlayer(window, (Player&)(*charList[0]), std::ref(gameClock), charList);
 
@@ -220,7 +253,7 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                     {
                         charList.erase(charList.begin()+i);
                         charList.push_back(new Citoyen(CITOYENS_BASE_HP));
-                        charList[0]->addHp(HP_REGEN_RATE);
+                        charList[0]->addHp(((Player*)charList[0])->getHealRate());
                         i = 1;
                     }
                     else
@@ -232,11 +265,24 @@ void gameLoop(sf::RenderWindow& window, std::vector<Character*>& charList){
                     drainLife.restart();
                 }
 
-                if(!charList[0]->isAlive() || gameClock.getElapsedTime().asSeconds() >= 60){
+                if(!charList[0]->isAlive() || gameClock.getElapsedTime().asSeconds() >= gameTime.asSeconds()){
                     gameCurrState.setCurrentState(GameState::OVER);
                 }
 
+                if(charList[0]->getHp() < 10)
+                    text1.setFillColor(sf::Color(200,0,0,255));
+                else if(charList[0]->getHp() < 25)
+                    text1.setFillColor(sf::Color(255,100,0,255));
+                else if(charList[0]->getHp() < 50)
+                    text1.setFillColor(sf::Color(100,255,0,255));
+                else if(charList[0]->getHp() < 75)
+                    text1.setFillColor(sf::Color(50,255,0,255));
+                else
+                    text1.setFillColor(sf::Color(0,255,0,255));
+
+
                 window.draw(text1);
+                window.draw(text2);
                 window.display();
                 break;
 

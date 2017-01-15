@@ -20,7 +20,15 @@ public:
 		/**
 		*	Teste si ce personnage est en vie
 		*/
-		void testAlive(){ setAlive((m_hp>0)? true : false); }
+		void testAlive(){
+			if (m_hp>0){
+				m_alive = true;
+			}
+			else{
+				m_hp = 0;
+				m_alive = false;
+			}
+		 }
 
 //		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 

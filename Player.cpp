@@ -20,19 +20,19 @@ Player::Player(){
 void Player::deplacement(){
     m_nstate = STANDING;
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && canGoLeft()){
         goLeft();
         m_nstate = WALKING;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && canGoRight()){
         goRight();
         m_nstate = WALKING;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && canGoUp()){
         goUp();
         m_nstate = WALKING;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && canGoDown()){
         goDown();
         m_nstate = WALKING;
     }

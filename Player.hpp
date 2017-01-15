@@ -5,6 +5,7 @@
 
 #include "Character.hpp"
 #include "Attaque.hpp"
+#include "windowParam.hpp"
 
 /**
  *  Classe joueur
@@ -34,9 +35,17 @@ public:
 
     void setNState(C_States state){ m_nstate = state; }
 
+    int getHealRate(){ return m_healRate; }
+
+    bool canGoLeft(){ return(getPosition().x - m_speed > 0 ); }
+    bool canGoRight(){ return(getPosition().x + m_speed < W_WIDTH); }
+    bool canGoUp(){ return(getPosition().y - m_speed > 0); }
+    bool canGoDown(){ return(getPosition().y + m_speed < W_HEIGHT); }
+
 protected:
     std::map<std::string, Attaque*> m_attaques;
     double m_walkSpeed;
+    int m_healRate;
 
     const float getAngleToMouse(sf::RenderWindow& window){
         sf::Vector2f c_m = (sf::Vector2f)sf::Mouse::getPosition(window);

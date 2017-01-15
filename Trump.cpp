@@ -8,10 +8,11 @@ Trump::Trump() : Player(){
     setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
     m_walkSpeed = 0.19f;
+    m_healRate = 10;
     m_hp = 90;
 
-    m_attaques["Punch"] = new Attaque(2,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
-    m_attaques["Kick"] = new Attaque(4,2,2,2,15*getScale().x,15*getScale().y,20*getScale().x);
+    m_attaques["Punch"] = new Attaque(26,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
+    m_attaques["Kick"] = new Attaque(30,2,2,2,15*getScale().x,15*getScale().y,20*getScale().x);
 }
 
 void Trump::animationDraw(){

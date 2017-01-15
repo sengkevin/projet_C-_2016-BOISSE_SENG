@@ -7,11 +7,12 @@ Obama::Obama() : Player(){
     setTextureRect(sf::IntRect(0,0,16,24));
     setScale(2,2);
     setOrigin(((getTextureRect().width)/2),((getTextureRect().height)/2));
-    m_walkSpeed = 0.23f;
+    m_walkSpeed = 0.25f;
+    m_healRate = 7;
     m_hp = 80;
 
-    m_attaques["Punch"] = new Attaque(1,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
-    m_attaques["Kick"] = new Attaque(2,2,2,2,15*getScale().x,15*getScale().y,20*getScale().x);
+    m_attaques["Punch"] = new Attaque(9,1,4,0,10*getScale().x,10*getScale().y,20*getScale().x);
+    m_attaques["Kick"] = new Attaque(20,2,2,2,15*getScale().x,15*getScale().y,20*getScale().x);
 }
 
 void Obama::animationDraw(){
